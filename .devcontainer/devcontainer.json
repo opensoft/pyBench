@@ -1,7 +1,9 @@
 {
-    "name": "Python Development Bench",
+    "name": "devBenches / pythonBench",
     "initializeCommand": "bash ${localWorkspaceFolder}/../../scripts/ensure-layer3.sh --base python-bench:latest",
-    "image": "python-bench:${localEnv:USER}",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "python-bench",
+    "shutdownAction": "stopCompose",
     "customizations": {
         "vscode": {
             "settings": {
@@ -16,7 +18,14 @@
                 "ms-python.black-formatter",
                 "ms-toolsai.jupyter",
                 "github.copilot",
-                "eamodio.gitlens"
+                "eamodio.gitlens",
+                "github.copilot",
+                "openai.chatgpt",
+                "google.geminicodeassist",
+                "google.gemini-cli-vscode-ide-companion",
+                "d3j.gemini-cli-on-vscode",
+                "Anthropic.claude-code",
+                "AndrePimenta.claude-code-chat"
             ]
         }
     },
@@ -24,6 +33,7 @@
         "SHELL": "/bin/zsh"
     },
     "remoteUser": "${localEnv:USER}",
+    "updateRemoteUserUID": false,
     "workspaceFolder": "/workspace",
     "mounts": [
         "source=pythonbench-zshhistory,target=/home/${localEnv:USER}/.zsh_history,type=volume",

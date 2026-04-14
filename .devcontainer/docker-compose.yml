@@ -1,16 +1,8 @@
-version: '3.8'
+name: dev-benches
 services:
-  python_bench:
+  python-bench:
     env_file: ../.env
-    image: python-bench:${USER}
-    container_name: python_bench
-    volumes:
-      # Mount full host home directory
-      - ~:/home/${USER}:cached
-      - ../..:/workspace:cached
-    ports:
-      - "8000:8000"
-      - "8888:8888"
+    image: python-bench:${USER:-brett}
+    container_name: python-bench
     command: sleep infinity
     working_dir: /workspace
-volumes: {}

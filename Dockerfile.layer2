@@ -1,6 +1,7 @@
 # Layer 2: Python Bench Image
 # USER-AGNOSTIC: No user creation — Layer 3 handles user setup
-FROM devbench-base:latest
+ARG BASE_IMAGE=dev-bench-base:latest
+FROM ${BASE_IMAGE}
 
 LABEL layer="2"
 LABEL layer.name="python-bench"
