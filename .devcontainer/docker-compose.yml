@@ -1,8 +1,33 @@
 name: dev-benches
 services:
-  python-bench:
+  py-bench:
     env_file: ../.env
-    image: python-bench:${USER:-brett}
-    container_name: python-bench
+    image: py-bench:${USER:-brett}
+    container_name: py-bench
     command: sleep infinity
     working_dir: /workspace
+    volumes:
+      - ${HOME}/projects:/workspace/projects:cached
+      - pybench-zshhistory:/home/${USER:-brett}/.zsh_history
+      - ${HOME}/.zshrc:/home/${USER:-brett}/.zshrc:ro
+      - ${HOME}/.oh-my-zsh:/home/${USER:-brett}/.oh-my-zsh:ro
+      - ${HOME}/.p10k.zsh:/home/${USER:-brett}/.p10k.zsh:ro
+      - ${HOME}/.bashrc:/home/${USER:-brett}/.bashrc:ro
+      - ${HOME}/.gitconfig:/home/${USER:-brett}/.gitconfig:ro
+      - ${HOME}/.ssh:/home/${USER:-brett}/.ssh:ro
+      - ${HOME}/.config/gh:/home/${USER:-brett}/.config/gh:ro
+      - ${HOME}/.claude:/home/${USER:-brett}/.claude:cached
+      - ${HOME}/.claude.json:/home/${USER:-brett}/.claude.json:cached
+      - ${HOME}/.codex:/home/${USER:-brett}/.codex:cached
+      - ${HOME}/.pi:/home/${USER:-brett}/.pi:cached
+      - ${HOME}/.config/sonarqube:/home/${USER:-brett}/.config/sonarqube:ro
+      - ${HOME}/.gemini:/home/${USER:-brett}/.gemini:cached
+      - ${HOME}/.grok:/home/${USER:-brett}/.grok:ro
+      - ${HOME}/.copilot-cli:/home/${USER:-brett}/.copilot-cli:ro
+      - ${HOME}/.notebooklm:/home/${USER:-brett}/.notebooklm:cached
+      - ${HOME}/.notebooklm-mcp-cli:/home/${USER:-brett}/.notebooklm-mcp-cli:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.local/state/opensoft/agenttower/logs:/home/${USER:-brett}/.local/state/opensoft/agenttower/logs
+
+volumes:
+  pybench-zshhistory:

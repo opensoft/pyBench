@@ -1,11 +1,11 @@
 #!/bin/bash
 
-DEVBENCH_DIR="/home/brett/projects/workBenches/devBench/pythonBench"
-CONTAINER_NAME="python_bench"
+DEVBENCH_DIR="/home/brett/projects/workBenches/devBenches/pyBench"
+CONTAINER_NAME="py-bench"
 
 cd "$DEVBENCH_DIR"
 
-echo "🐍 DevPython - Starting PythonBench Container..."
+echo "🐍 Starting pyBench container..."
 
 # Check if container is already running
 if docker ps --format "table {{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
@@ -25,7 +25,7 @@ else
     fi
 fi
 
-echo "🔗 Connecting to PythonBench container..."
+echo "🔗 Connecting to pyBench container..."
 echo "📁 You'll be in: /workspace (your projects folder)"
 echo "🐍 Available: Python 3.12/3.11/3.10, Jupyter, ML/AI libs, and 200+ dev tools"
 echo ""

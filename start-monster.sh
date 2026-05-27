@@ -5,7 +5,7 @@ export UID=$(id -u)
 export GID=$(id -g) 
 export USER=$(whoami)
 
-echo "🐍 Starting the Python DevBench Monster Container"
+echo "🐍 Starting the pyBench monster container"
 echo "   User: $USER (UID: $UID, GID: $GID)"
 
 # Validate we have the required info
@@ -17,18 +17,23 @@ fi
 
 echo "🔧 Building container with user mapping..."
 
+"$(dirname "$0")/scripts/configure-amd-rocm-wsl.sh"
+
 # Start the container with proper user mapping
-docker-compose -f .devcontainer/docker-compose.yml up -d --build
+docker-compose \
+    -f .devcontainer/docker-compose.yml \
+    -f .devcontainer/docker-compose.amd-rocm.generated.yml \
+    up -d --build
 
 if [ $? -eq 0 ]; then
     echo "✅ Container started successfully!"
     echo ""
     echo "🎯 Next steps:"
     echo "   - Open VS Code and select 'Reopen in Container'"
-    echo "   - Or run: docker exec -it python_bench zsh"
+    echo "   - Or run: docker exec -it py-bench zsh"
     echo ""
     echo "🔍 To check container status:"
-    echo "   docker ps | grep python_bench"
+    echo "   docker ps | grep py-bench"
     echo ""
     echo "🐍 Python Monster includes:"
     echo "   - Python 3.12/3.11/3.10 with pyenv"
@@ -40,5 +45,5 @@ if [ $? -eq 0 ]; then
     echo "   - And 200+ more packages!"
 else
     echo "❌ Container failed to start. Check Docker logs:"
-    echo "   docker-compose -f .devcontainer/docker-compose.yml logs"
+    echo "   docker-compose -f .devcontainer/docker-compose.yml -f .devcontainer/docker-compose.amd-rocm.generated.yml logs"
 fi

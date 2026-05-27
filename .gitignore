@@ -1,3 +1,4 @@
 
 # DevContainer override files
 .devcontainer/docker-compose.override.yml
+.devcontainer/docker-compose.amd-rocm.generated.yml

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Validate that a pyBench container has the WSL AMD ROCm runtime exposure
+# needed by ROCm-backed Paddle/PaddleOCR workloads.
+
+set -euo pipefail
+
+ROCM_ROOT="${ROCM_ROOT:-${ROCM_PATH:-/opt/rocm-7.2.0}}"
+PADDLE_SO="${1:-}"
+
+if [[ -z "$PADDLE_SO" ]]; then
+  candidate="/workspace/projects/ledgerlinc/ledgerlinc-model-ocr-pipeline/.venv-paddle-rocm/lib/python3.12/site-packages/paddle/base/libpaddle.so"
+  if [[ -r "$candidate" ]]; then
+    PADDLE_SO="$candidate"
+  fi
+fi
+
+failed=0
+
+check_path() {
+  local path="$1"
+  local label="$2"
+  if [[ -e "$path" ]]; then
+    echo "ok: ${label}: ${path}"
+  else
+    echo "missing: ${label}: ${path}" >&2
+    failed=1
+  fi
+}
+
+check_path /dev/dxg "WSL GPU device"
+check_path "${ROCM_ROOT}/lib/libamdhip64.so.7" "ROCm HIP runtime"
+check_path "${ROCM_ROOT}/lib/libhsa-runtime64.so.1" "ROCm HSA runtime"
+
+echo "ROCM_PATH=${ROCM_PATH:-}"
+echo "HIP_PATH=${HIP_PATH:-}"
+echo "HSA_ENABLE_DXG_DETECTION=${HSA_ENABLE_DXG_DETECTION:-}"
+echo "HSA_ENABLE_SDMA=${HSA_ENABLE_SDMA:-}"
+echo "LD_PRELOAD=${LD_PRELOAD:-}"
+echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-}"
+
+if [[ -n "$PADDLE_SO" ]]; then
+  if [[ ! -r "$PADDLE_SO" ]]; then
+    echo "missing: Paddle shared library: ${PADDLE_SO}" >&2
+    failed=1
+  elif ldd "$PADDLE_SO" | grep -q "not found"; then
+    echo "missing shared libraries for ${PADDLE_SO}:" >&2
+    ldd "$PADDLE_SO" | grep "not found" >&2
+    failed=1
+  else
+    echo "ok: Paddle shared-library dependencies resolved"
+  fi
+else
+  echo "skip: Paddle shared-library check; pass libpaddle.so path as argv[1]"
+fi
+
+exit "$failed"

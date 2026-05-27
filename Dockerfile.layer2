@@ -1,11 +1,11 @@
-# Layer 2: Python Bench Image
+# Layer 2: pyBench Image
 # USER-AGNOSTIC: No user creation — Layer 3 handles user setup
 ARG BASE_IMAGE=dev-bench-base:latest
 FROM ${BASE_IMAGE}
 
 LABEL layer="2"
-LABEL layer.name="python-bench"
-LABEL layer.version="2.0.0"
+LABEL layer.name="py-bench"
+LABEL layer.version="2.0.3"
 LABEL layer.description="Python development tools (user-agnostic)"
 LABEL bench.type="python"
 
@@ -18,12 +18,23 @@ RUN apt-get update && apt-get install -y \
     python3.12-venv \
     python3.12-dev \
     python3-pip \
+    libomp5 \
+    libnuma1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install pipx, poetry, and common Python tools
 RUN python3 -m pip install --break-system-packages \
-    pipx poetry black flake8 mypy pytest ipython jupyter \
+    pipx poetry black flake8 mypy pytest pytest-cov coverage pysonar ipython jupyter \
     django flask fastapi uvicorn pandas numpy
+
+# Install GitLab CLI (glab)
+RUN apt-get update && apt-get install -y glab && rm -rf /var/lib/apt/lists/*
+
+COPY scripts/check-amd-rocm-wsl /usr/local/bin/check-amd-rocm-wsl
+RUN chmod +x /usr/local/bin/check-amd-rocm-wsl && \
+    if [ ! -e /usr/lib/x86_64-linux-gnu/libomp.so ] && [ -e /usr/lib/x86_64-linux-gnu/libomp.so.5 ]; then \
+        ln -s /usr/lib/x86_64-linux-gnu/libomp.so.5 /usr/lib/x86_64-linux-gnu/libomp.so; \
+    fi
 
 # Add Python path to /etc/skel/.zshrc
 RUN echo 'export PATH="$HOME/.local/bin:$PATH"' >> /etc/skel/.zshrc

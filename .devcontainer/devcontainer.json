@@ -1,8 +1,11 @@
 {
-    "name": "devBenches / pythonBench",
-    "initializeCommand": "bash ${localWorkspaceFolder}/../../scripts/ensure-layer3.sh --base python-bench:latest",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "python-bench",
+    "name": "devBenches / pyBench",
+    "initializeCommand": "bash ${localWorkspaceFolder}/scripts/configure-amd-rocm-wsl.sh && bash ${localWorkspaceFolder}/../scripts/ensure-sonarqube-mcp.sh && bash ${localWorkspaceFolder}/scripts/ensure-images.sh --user ${localEnv:USER} && bash ${localWorkspaceFolder}/../../scripts/reconcile-devcontainer-container.sh --container py-bench --image py-bench:${localEnv:USER}",
+    "dockerComposeFile": [
+        "docker-compose.yml",
+        "docker-compose.amd-rocm.generated.yml"
+    ],
+    "service": "py-bench",
     "shutdownAction": "stopCompose",
     "customizations": {
         "vscode": {
@@ -25,18 +28,24 @@
                 "google.gemini-cli-vscode-ide-companion",
                 "d3j.gemini-cli-on-vscode",
                 "Anthropic.claude-code",
-                "AndrePimenta.claude-code-chat"
+                "AndrePimenta.claude-code-chat",
+                "SonarSource.sonarlint-vscode",
+                "ms-azuretools.vscode-containers",
+                "github.vscode-github-actions"
             ]
         }
     },
     "containerEnv": {
         "SHELL": "/bin/zsh"
     },
+    "remoteEnv": {
+        "PATH": "/home/${localEnv:USER}/.local/bin:${containerEnv:PATH}"
+    },
     "remoteUser": "${localEnv:USER}",
     "updateRemoteUserUID": false,
     "workspaceFolder": "/workspace",
     "mounts": [
-        "source=pythonbench-zshhistory,target=/home/${localEnv:USER}/.zsh_history,type=volume",
+        "source=pybench-zshhistory,target=/home/${localEnv:USER}/.zsh_history,type=volume",
         "source=${localEnv:HOME}/projects,target=/workspace/projects,type=bind",
 
         // Shell configurations
@@ -55,15 +64,23 @@
         "source=${localEnv:HOME}/.config/gh,target=/home/${localEnv:USER}/.config/gh,type=bind,readonly",
 
         // AI Agent Credentials
+        "source=${localEnv:HOME}/.agents,target=/home/${localEnv:USER}/.agents,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.claude,target=/home/${localEnv:USER}/.claude,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.claude.json,target=/home/${localEnv:USER}/.claude.json,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.codex,target=/home/${localEnv:USER}/.codex,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.pi,target=/home/${localEnv:USER}/.pi,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.config/sonarqube,target=/home/${localEnv:USER}/.config/sonarqube,type=bind,readonly",
         "source=${localEnv:HOME}/.gemini,target=/home/${localEnv:USER}/.gemini,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.grok,target=/home/${localEnv:USER}/.grok,type=bind,readonly",
         "source=${localEnv:HOME}/.copilot-cli,target=/home/${localEnv:USER}/.copilot-cli,type=bind,readonly",
         // NotebookLM (auth tokens from host)
         "source=${localEnv:HOME}/.notebooklm,target=/home/${localEnv:USER}/.notebooklm,type=bind,consistency=cached",
-        "source=${localEnv:HOME}/.notebooklm-mcp-cli,target=/home/${localEnv:USER}/.notebooklm-mcp-cli,type=bind,consistency=cached"
+        "source=${localEnv:HOME}/.notebooklm-mcp-cli,target=/home/${localEnv:USER}/.notebooklm-mcp-cli,type=bind,consistency=cached",
+
+        // AgentTower: Docker socket (DooD) for daemon to docker-exec into containers
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+        // AgentTower: log directory shared between host and container (FR-007 host-visibility)
+        "source=${localEnv:HOME}/.local/state/opensoft/agenttower/logs,target=/home/${localEnv:USER}/.local/state/opensoft/agenttower/logs,type=bind"
     ],
     "forwardPorts": [8000, 8888],
     "portsAttributes": {

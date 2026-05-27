@@ -18,7 +18,7 @@
 services:
   # Note: Replace 'app' with your actual service name from docker-compose.yml
   # Common service names: app, web, dev, service, etc.
-  python_bench:
+  py-bench:
     volumes:
       # ========================================
       # AI Coding Assistant Configurations

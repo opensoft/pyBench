@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build Layer 2 and ensure Layer 3 (python-bench)
+# Build Layer 2 and ensure Layer 3 (py-bench)
 
 set -e
 
@@ -12,4 +12,4 @@ if [ "$USERNAME" = "--user" ]; then
 fi
 
 "${SCRIPT_DIR}/build-layer2.sh" --user "$USERNAME"
-exec "${REPO_DIR}/scripts/ensure-layer3.sh" --base "python-bench:latest" --user "$USERNAME"
+exec "${REPO_DIR}/scripts/ensure-layer3.sh" --base "py-bench:latest" --user "$USERNAME"

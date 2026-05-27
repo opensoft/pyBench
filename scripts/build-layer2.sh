@@ -1,11 +1,11 @@
 #!/bin/bash
-# Build script for Layer 2: Python Bench Image
-# Creates: python-bench:latest
+# Build script for Layer 2: pyBench image
+# Creates: py-bench:latest
 
 set -euo pipefail
 
 echo "=========================================="
-echo "Building Layer 2: Python Bench"
+echo "Building Layer 2: pyBench"
 echo "=========================================="
 echo ""
 
@@ -22,7 +22,7 @@ fi
 BASE_IMAGE="$(resolve_family_base_image dev "$USERNAME" || true)"
 
 echo "Configuration:"
-echo "  Tag: python-bench:latest (user-agnostic)"
+echo "  Tag: py-bench:latest (user-agnostic)"
 echo "  Base image: ${BASE_IMAGE:-$(family_base_image dev)}"
 echo ""
 
@@ -35,17 +35,17 @@ if [ -z "$BASE_IMAGE" ]; then
     exit 1
 fi
 
-echo "Building python-bench:latest..."
+echo "Building py-bench:latest..."
 docker build \
     --build-arg BASE_IMAGE="$BASE_IMAGE" \
     --build-arg USERNAME="$USERNAME" \
     -f Dockerfile.layer2 \
-    -t "python-bench:latest" \
+    -t "py-bench:latest" \
     .
 
 echo ""
 echo "✓ Layer 2 (Python) built successfully!"
-echo "  Image: python-bench:latest"
+echo "  Image: py-bench:latest"
 echo ""
 echo "Layer 3 (user personalization) is handled by"
 echo "build-layer.sh or scripts/ensure-layer3.sh."
