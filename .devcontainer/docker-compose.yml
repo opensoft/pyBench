@@ -29,5 +29,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOME}/.local/state/opensoft/agenttower/logs:/home/${USER:-brett}/.local/state/opensoft/agenttower/logs
 
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: "1400"
+
 volumes:
   pybench-zshhistory:
