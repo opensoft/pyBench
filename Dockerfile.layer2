@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
 # Install pipx, poetry, and common Python tools
 RUN python3 -m pip install --break-system-packages \
     pipx poetry black flake8 mypy pytest pytest-cov coverage pysonar ipython jupyter \
-    django flask fastapi uvicorn pandas numpy
+    django flask 'fastapi[standard]' uvicorn pandas numpy
 
 # Install GitLab CLI (glab)
 RUN apt-get update && apt-get install -y glab && rm -rf /var/lib/apt/lists/*
