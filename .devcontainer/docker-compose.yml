@@ -18,6 +18,7 @@ services:
       - ${HOME}/.config/gh:/home/${USER:-brett}/.config/gh:ro
       - ${HOME}/.claude:/home/${USER:-brett}/.claude:cached
       - ${HOME}/.claude.json:/home/${USER:-brett}/.claude.json:cached
+      - ${HOME}/.claude-profiles:/home/${USER:-brett}/.claude-profiles:cached
       - ${HOME}/.codex:/home/${USER:-brett}/.codex:cached
       - ${HOME}/.pi:/home/${USER:-brett}/.pi:cached
       - ${HOME}/.config/sonarqube:/home/${USER:-brett}/.config/sonarqube:ro
