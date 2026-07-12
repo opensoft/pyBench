@@ -36,7 +36,12 @@ echo "HIP_PATH=${HIP_PATH:-}"
 echo "HSA_ENABLE_DXG_DETECTION=${HSA_ENABLE_DXG_DETECTION:-}"
 echo "HSA_ENABLE_SDMA=${HSA_ENABLE_SDMA:-}"
 echo "LD_PRELOAD=${LD_PRELOAD:-}"
+echo "ROCM_HSA_PRELOAD=${ROCM_HSA_PRELOAD:-}"
 echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-}"
+
+if [[ -n "${LD_PRELOAD:-}" ]]; then
+  echo "warn: LD_PRELOAD is globally set; prefer LD_PRELOAD=\"\$ROCM_HSA_PRELOAD\" only on ROCm commands that need it." >&2
+fi
 
 if [[ -n "$PADDLE_SO" ]]; then
   if [[ ! -r "$PADDLE_SO" ]]; then
