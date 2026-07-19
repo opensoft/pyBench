@@ -18,6 +18,8 @@ services:
       - ${HOME}/.config/gh:/home/${USER:-brett}/.config/gh:ro
       - ${HOME}/.claude:/home/${USER:-brett}/.claude:cached
       - ${HOME}/.claude.json:/home/${USER:-brett}/.claude.json:cached
+      - ${HOME}/.claude-profiles:/home/${USER:-brett}/.claude-profiles:cached
+      - ${HOME}/.chatgpt-profiles:/home/${USER:-brett}/.chatgpt-profiles:cached
       - ${HOME}/.codex:/home/${USER:-brett}/.codex:cached
       - ${HOME}/.pi:/home/${USER:-brett}/.pi:cached
       - ${HOME}/.config/sonarqube:/home/${USER:-brett}/.config/sonarqube:ro
@@ -31,6 +33,9 @@ services:
 
 networks:
   default:
+    # Keep pyBench in the dev-benches Compose group without forcing Docker to
+    # recreate the shared Flutter network when pyBench needs a smaller MTU.
+    name: py-bench_default
     driver_opts:
       com.docker.network.driver.mtu: "1400"
 
