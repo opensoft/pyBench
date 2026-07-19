@@ -69,6 +69,7 @@
         "source=${localEnv:HOME}/.claude.json,target=/home/${localEnv:USER}/.claude.json,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.claude-profiles,target=/home/${localEnv:USER}/.claude-profiles,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.codex,target=/home/${localEnv:USER}/.codex,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.chatgpt-profiles,target=/home/${localEnv:USER}/.chatgpt-profiles,type=bind,consistency=cached",
         // Omnigent (AI meta-harness, wraps Codex/Claude)
         "source=${localEnv:HOME}/.omnigent,target=/home/${localEnv:USER}/.omnigent,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.pi,target=/home/${localEnv:USER}/.pi,type=bind,consistency=cached",
