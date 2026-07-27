@@ -6,6 +6,11 @@ services:
     container_name: py-bench
     command: sleep infinity
     working_dir: /workspace
+    environment:
+      CODEX_SONARQUBE_MCP_URL: ${CODEX_SONARQUBE_MCP_URL:-http://sonarqube-mcp-proxy:64130/mcp}
+    networks:
+      - default
+      - devbench-shared
     volumes:
       - ${HOME}/projects:/workspace/projects:cached
       - pybench-zshhistory:/home/${USER:-brett}/.zsh_history
@@ -38,6 +43,9 @@ networks:
     name: py-bench_default
     driver_opts:
       com.docker.network.driver.mtu: "1400"
+  devbench-shared:
+    name: devbench-shared
+    external: true
 
 volumes:
   pybench-zshhistory:
