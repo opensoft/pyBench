@@ -14,7 +14,7 @@ fail() {
     exit 1
 }
 
-docker compose \
+env -u CODEX_SONARQUBE_MCP_URL docker compose \
     -f "$COMPOSE_FILE" \
     config \
     --format json \
