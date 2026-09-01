@@ -6,6 +6,11 @@ services:
     container_name: py-bench
     command: sleep infinity
     working_dir: /workspace
+    environment:
+      CODEX_SONARQUBE_MCP_URL: ${CODEX_SONARQUBE_MCP_URL:-http://sonarqube-mcp-proxy:64130/mcp}
+    networks:
+      - default
+      - devbench-shared
     volumes:
       - ${HOME}/projects:/workspace/projects:cached
       - pybench-zshhistory:/home/${USER:-brett}/.zsh_history
@@ -18,6 +23,12 @@ services:
       - ${HOME}/.config/gh:/home/${USER:-brett}/.config/gh:ro
       - ${HOME}/.claude:/home/${USER:-brett}/.claude:cached
       - ${HOME}/.claude.json:/home/${USER:-brett}/.claude.json:cached
+      - ${HOME}/.claude-profiles:/home/${USER:-brett}/.claude-profiles:cached
+      - ${HOME}/.chatgpt-profiles:/home/${USER:-brett}/.chatgpt-profiles:cached
+      - ${HOME}/.opencode-profiles:/home/${USER:-brett}/.opencode-profiles:cached
+      - ${HOME}/.config/workbenches:/home/${USER:-brett}/.config/workbenches:ro
+      - ${HOME}/.local/lib/workbenches:/home/${USER:-brett}/.local/lib/workbenches:ro
+      - ${HOME}/.local/state/workbenches:/home/${USER:-brett}/.local/state/workbenches:cached
       - ${HOME}/.codex:/home/${USER:-brett}/.codex:cached
       - ${HOME}/.pi:/home/${USER:-brett}/.pi:cached
       - ${HOME}/.config/sonarqube:/home/${USER:-brett}/.config/sonarqube:ro
@@ -31,8 +42,14 @@ services:
 
 networks:
   default:
+    # Keep pyBench in the dev-benches Compose group without forcing Docker to
+    # recreate the shared Flutter network when pyBench needs a smaller MTU.
+    name: py-bench_default
     driver_opts:
       com.docker.network.driver.mtu: "1400"
+  devbench-shared:
+    name: devbench-shared
+    external: true
 
 volumes:
   pybench-zshhistory:

@@ -56,7 +56,7 @@ cat >>"$OUT_FILE" <<YAML
       HIP_PATH: ${ROCM_ROOT}
       HSA_ENABLE_DXG_DETECTION: "1"
       HSA_ENABLE_SDMA: "0"
-      LD_PRELOAD: ${ROCM_ROOT}/lib/libhsa-runtime64.so.1
+      ROCM_HSA_PRELOAD: ${ROCM_ROOT}/lib/libhsa-runtime64.so.1
       LD_LIBRARY_PATH: ${ROCM_ROOT}/lib:/usr/lib/x86_64-linux-gnu:/usr/lib
 YAML
 
