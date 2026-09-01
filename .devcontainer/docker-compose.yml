@@ -25,6 +25,10 @@ services:
       - ${HOME}/.claude.json:/home/${USER:-brett}/.claude.json:cached
       - ${HOME}/.claude-profiles:/home/${USER:-brett}/.claude-profiles:cached
       - ${HOME}/.chatgpt-profiles:/home/${USER:-brett}/.chatgpt-profiles:cached
+      - ${HOME}/.opencode-profiles:/home/${USER:-brett}/.opencode-profiles:cached
+      - ${HOME}/.config/workbenches:/home/${USER:-brett}/.config/workbenches:ro
+      - ${HOME}/.local/lib/workbenches:/home/${USER:-brett}/.local/lib/workbenches:ro
+      - ${HOME}/.local/state/workbenches:/home/${USER:-brett}/.local/state/workbenches:cached
       - ${HOME}/.codex:/home/${USER:-brett}/.codex:cached
       - ${HOME}/.pi:/home/${USER:-brett}/.pi:cached
       - ${HOME}/.config/sonarqube:/home/${USER:-brett}/.config/sonarqube:ro

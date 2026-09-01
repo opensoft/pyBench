@@ -14,7 +14,12 @@ fail() {
     exit 1
 }
 
-docker compose \
+for required_command in docker jq; do
+    command -v "$required_command" >/dev/null 2>&1 \
+        || fail "required command is unavailable: $required_command"
+done
+
+env -u CODEX_SONARQUBE_MCP_URL docker compose \
     -f "$COMPOSE_FILE" \
     config \
     --format json \
@@ -45,7 +50,13 @@ jq -e '
 ' "$RENDERED_CONFIG" >/dev/null \
     || fail "py-bench configuration must not publish the MCP proxy"
 
-! grep -Eq 'SONAR(QUBE)?_TOKEN' "$COMPOSE_FILE" \
-    || fail "py-bench Compose source must not contain a SonarQube token"
+for environment_file in \
+    "$COMPOSE_FILE" \
+    "$REPO_ROOT/.env" \
+    "$REPO_ROOT/.devcontainer/.env"; do
+    [[ -f "$environment_file" ]] || continue
+    ! grep -Eq 'SONAR(QUBE)?_TOKEN' "$environment_file" \
+        || fail "$environment_file must not contain a SonarQube token"
+done
 
 echo "pyBench devcontainer configuration tests passed"
