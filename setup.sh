@@ -55,14 +55,13 @@ ensure_host_gitconfig
 
 echo "🔧 Starting container with user mapping..."
 "$SCRIPT_DIR/scripts/configure-amd-rocm-wsl.sh"
-docker-compose \
+if docker-compose \
     -f .devcontainer/docker-compose.yml \
     -f .devcontainer/docker-compose.amd-rocm.generated.yml \
-    up -d
-
-if [ $? -eq 0 ]; then
+    up -d; then
     echo "✅ Container started successfully!"
 else
     echo "❌ Container failed to start. Check Docker logs:"
     echo "   docker-compose -f .devcontainer/docker-compose.yml -f .devcontainer/docker-compose.amd-rocm.generated.yml logs"
+    exit 1
 fi
