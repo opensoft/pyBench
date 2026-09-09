@@ -45,7 +45,6 @@ networks:
     # Give pyBench its own Compose network key so it never collides with
     # other devBenches that also use the "default" key under the shared
     # dev-benches Compose project.
-    name: py-bench_default
     driver_opts:
       com.docker.network.driver.mtu: "1400"
   devbench-shared:

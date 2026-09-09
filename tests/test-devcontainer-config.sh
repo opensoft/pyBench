@@ -34,9 +34,14 @@ jq -e '
 
 jq -e '
     (.services["py-bench"].networks | keys | sort)
-        == ["default", "devbench-shared"]
+        == ["devbench-shared", "py-bench-net"]
 ' "$RENDERED_CONFIG" >/dev/null \
-    || fail "py-bench must retain default and join devbench-shared"
+    || fail "py-bench must use its isolated network and join devbench-shared"
+
+jq -e '
+    .networks["py-bench-net"].name == "dev-benches_py-bench-net"
+' "$RENDERED_CONFIG" >/dev/null \
+    || fail "py-bench-net must remain scoped to the dev-benches Compose project"
 
 jq -e '
     .networks["devbench-shared"].external == true
