@@ -9,7 +9,7 @@ services:
     environment:
       CODEX_SONARQUBE_MCP_URL: ${CODEX_SONARQUBE_MCP_URL:-http://sonarqube-mcp-proxy:64130/mcp}
     networks:
-      - default
+      - py-bench-net
       - devbench-shared
     volumes:
       - ${HOME}/projects:/workspace/projects:cached
@@ -41,10 +41,10 @@ services:
       - ${HOME}/.local/state/opensoft/agenttower/logs:/home/${USER:-brett}/.local/state/opensoft/agenttower/logs
 
 networks:
-  default:
-    # Keep pyBench in the dev-benches Compose group without forcing Docker to
-    # recreate the shared Flutter network when pyBench needs a smaller MTU.
-    name: py-bench_default
+  py-bench-net:
+    # Give pyBench its own Compose network key so it never collides with
+    # other devBenches that also use the "default" key under the shared
+    # dev-benches Compose project.
     driver_opts:
       com.docker.network.driver.mtu: "1400"
   devbench-shared:
