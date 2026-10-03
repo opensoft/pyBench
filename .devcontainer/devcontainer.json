@@ -35,10 +35,8 @@
             ]
         }
     },
-    "postStartCommand": "sudo install -d -m 0700 -o \"$(id -u)\" -g \"$(id -g)\" \"$HOME/.workbenches-history\" && if [ -f \"$HOME/.workbenches-history/.zsh_history\" ]; then sudo chown \"$(id -u):$(id -g)\" \"$HOME/.workbenches-history/.zsh_history\"; fi",
     "containerEnv": {
-        "SHELL": "/bin/zsh",
-        "HISTFILE": "/home/${localEnv:USER}/.workbenches-history/.zsh_history"
+        "SHELL": "/bin/zsh"
     },
     "remoteEnv": {
         "PATH": "/home/${localEnv:USER}/.local/bin:${containerEnv:PATH}"
@@ -47,7 +45,6 @@
     "updateRemoteUserUID": false,
     "workspaceFolder": "/workspace",
     "mounts": [
-        "source=pybench-zshhistory,target=/home/${localEnv:USER}/.workbenches-history,type=volume",
         "source=${localEnv:HOME}/projects,target=/workspace/projects,type=bind",
 
         // Shell configurations

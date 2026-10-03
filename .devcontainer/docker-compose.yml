@@ -4,7 +4,7 @@ services:
     env_file: ../.env
     image: py-bench:${USER:-brett}
     container_name: py-bench
-    command: sleep infinity
+    command: ["/bin/bash", "-c", 'sudo install -d -m 0700 -o "$$(id -u)" -g "$$(id -g)" "$$HOME/.workbenches-history" && if [ -f "$$HOME/.workbenches-history/.zsh_history" ]; then sudo chown "$$(id -u):$$(id -g)" "$$HOME/.workbenches-history/.zsh_history"; fi && exec sleep infinity']
     working_dir: /workspace
     environment:
       HISTFILE: /home/${USER:-brett}/.workbenches-history/.zsh_history
