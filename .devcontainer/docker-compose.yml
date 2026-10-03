@@ -4,16 +4,17 @@ services:
     env_file: ../.env
     image: py-bench:${USER:-brett}
     container_name: py-bench
-    command: sleep infinity
+    command: ["/bin/bash", "-c", 'sudo install -d -m 0700 -o "$$(id -u)" -g "$$(id -g)" "$$HOME/.workbenches-history" && if [ -f "$$HOME/.workbenches-history/.zsh_history" ]; then sudo chown "$$(id -u):$$(id -g)" "$$HOME/.workbenches-history/.zsh_history"; fi && exec sleep infinity']
     working_dir: /workspace
     environment:
+      HISTFILE: /home/${USER:-brett}/.workbenches-history/.zsh_history
       CODEX_SONARQUBE_MCP_URL: ${CODEX_SONARQUBE_MCP_URL:-http://sonarqube-mcp-proxy:64130/mcp}
     networks:
       - py-bench-net
       - devbench-shared
     volumes:
       - ${HOME}/projects:/workspace/projects:cached
-      - pybench-zshhistory:/home/${USER:-brett}/.zsh_history
+      - pybench-zshhistory:/home/${USER:-brett}/.workbenches-history
       - ${HOME}/.zshrc:/home/${USER:-brett}/.zshrc:ro
       - ${HOME}/.oh-my-zsh:/home/${USER:-brett}/.oh-my-zsh:ro
       - ${HOME}/.p10k.zsh:/home/${USER:-brett}/.p10k.zsh:ro
@@ -53,3 +54,5 @@ networks:
 
 volumes:
   pybench-zshhistory:
+    # Retain the existing Compose volume; override for a legacy engine name.
+    name: ${WORKBENCH_HISTORY_VOLUME:-dev-benches_pybenchhistory}
