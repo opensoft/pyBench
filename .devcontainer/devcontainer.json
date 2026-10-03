@@ -35,6 +35,7 @@
             ]
         }
     },
+    "postStartCommand": "sudo install -d -m 0700 -o \"$(id -u)\" -g \"$(id -g)\" \"$HOME/.workbenches-history\" && if [ -f \"$HOME/.workbenches-history/.zsh_history\" ]; then sudo chown \"$(id -u):$(id -g)\" \"$HOME/.workbenches-history/.zsh_history\"; fi",
     "containerEnv": {
         "SHELL": "/bin/zsh",
         "HISTFILE": "/home/${localEnv:USER}/.workbenches-history/.zsh_history"

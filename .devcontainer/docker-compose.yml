@@ -7,13 +7,14 @@ services:
     command: sleep infinity
     working_dir: /workspace
     environment:
+      HISTFILE: /home/${USER:-brett}/.workbenches-history/.zsh_history
       CODEX_SONARQUBE_MCP_URL: ${CODEX_SONARQUBE_MCP_URL:-http://sonarqube-mcp-proxy:64130/mcp}
     networks:
       - py-bench-net
       - devbench-shared
     volumes:
       - ${HOME}/projects:/workspace/projects:cached
-      - pybench-zshhistory:/home/${USER:-brett}/.zsh_history
+      - pybench-zshhistory:/home/${USER:-brett}/.workbenches-history
       - ${HOME}/.zshrc:/home/${USER:-brett}/.zshrc:ro
       - ${HOME}/.oh-my-zsh:/home/${USER:-brett}/.oh-my-zsh:ro
       - ${HOME}/.p10k.zsh:/home/${USER:-brett}/.p10k.zsh:ro
