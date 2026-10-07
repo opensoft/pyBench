@@ -1,6 +1,7 @@
 name: dev-benches
 services:
   py-bench:
+    init: true
     env_file: ../.env
     image: py-bench:${USER:-brett}
     container_name: py-bench
