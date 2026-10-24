@@ -54,6 +54,7 @@ fi
 ensure_host_gitconfig
 
 echo "🔧 Starting container with user mapping..."
+"$SCRIPT_DIR/scripts/prepare-openbenches-mounts.sh"
 "$SCRIPT_DIR/scripts/configure-amd-rocm-wsl.sh"
 if docker-compose \
     -f .devcontainer/docker-compose.yml \

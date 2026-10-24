@@ -17,6 +17,7 @@ fi
 
 echo "🔧 Building container with user mapping..."
 
+"$(dirname "$0")/scripts/prepare-openbenches-mounts.sh" || exit 1
 "$(dirname "$0")/scripts/configure-amd-rocm-wsl.sh"
 
 # Start the container with proper user mapping
