@@ -23,6 +23,7 @@ echo "🔧 Building container with user mapping..."
 # Start the container with proper user mapping
 docker-compose \
     -f .devcontainer/docker-compose.yml \
+    -f .devcontainer/.openbenches-mounts/docker-compose.yml \
     -f .devcontainer/docker-compose.amd-rocm.generated.yml \
     up -d --build
 

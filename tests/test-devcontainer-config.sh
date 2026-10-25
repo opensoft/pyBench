@@ -19,6 +19,9 @@ for required_command in docker jq; do
         || fail "required command is unavailable: $required_command"
 done
 
+docker compose version >/dev/null 2>&1 \
+    || fail "required command is unavailable: docker compose"
+
 env -u CODEX_SONARQUBE_MCP_URL docker compose \
     -f "$COMPOSE_FILE" \
     config \

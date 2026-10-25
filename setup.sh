@@ -58,6 +58,7 @@ echo "🔧 Starting container with user mapping..."
 "$SCRIPT_DIR/scripts/configure-amd-rocm-wsl.sh"
 if docker-compose \
     -f .devcontainer/docker-compose.yml \
+    -f .devcontainer/.openbenches-mounts/docker-compose.yml \
     -f .devcontainer/docker-compose.amd-rocm.generated.yml \
     up -d; then
     echo "✅ Container started successfully!"
