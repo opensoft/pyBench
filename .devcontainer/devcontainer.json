@@ -1,8 +1,9 @@
 {
     "name": "devBenches / pyBench",
-    "initializeCommand": "bash ${localWorkspaceFolder}/scripts/configure-amd-rocm-wsl.sh && bash ${localWorkspaceFolder}/../scripts/ensure-sonarqube-mcp.sh && bash ${localWorkspaceFolder}/scripts/ensure-images.sh --user ${localEnv:USER} && bash ${localWorkspaceFolder}/../../scripts/reconcile-devcontainer-container.sh --container py-bench --image py-bench:${localEnv:USER}",
+    "initializeCommand": "bash \"${localWorkspaceFolder}/scripts/prepare-openbenches-mounts.sh\" && bash \"${localWorkspaceFolder}/scripts/configure-amd-rocm-wsl.sh\" && bash \"${localWorkspaceFolder}/../scripts/ensure-sonarqube-mcp.sh\" && bash \"${localWorkspaceFolder}/scripts/ensure-images.sh\" --user \"${localEnv:USER}\" && bash \"${localWorkspaceFolder}/../../scripts/reconcile-devcontainer-container.sh\" --container py-bench --image \"py-bench:${localEnv:USER}\"",
     "dockerComposeFile": [
         "docker-compose.yml",
+        ".openbenches-mounts/docker-compose.yml",
         "docker-compose.amd-rocm.generated.yml"
     ],
     "service": "py-bench",
@@ -70,9 +71,6 @@
         "source=${localEnv:HOME}/.codex,target=/home/${localEnv:USER}/.codex,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.chatgpt-profiles,target=/home/${localEnv:USER}/.chatgpt-profiles,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.opencode-profiles,target=/home/${localEnv:USER}/.opencode-profiles,type=bind,consistency=cached",
-        "source=${localEnv:HOME}/.config/workbenches,target=/home/${localEnv:USER}/.config/workbenches,type=bind,readonly",
-        "source=${localEnv:HOME}/.local/lib/workbenches,target=/home/${localEnv:USER}/.local/lib/workbenches,type=bind,readonly",
-        "source=${localEnv:HOME}/.local/state/workbenches,target=/home/${localEnv:USER}/.local/state/workbenches,type=bind,consistency=cached",
         // Omnigent (AI meta-harness, wraps Codex/Claude)
         "source=${localEnv:HOME}/.omnigent,target=/home/${localEnv:USER}/.omnigent,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.pi,target=/home/${localEnv:USER}/.pi,type=bind,consistency=cached",
