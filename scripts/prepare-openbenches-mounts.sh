@@ -105,6 +105,7 @@ ensure_default_root STATE "$state_root"
 
 yaml_quote() {
     local value="$1"
+    value="${value//\$/\$\$}"
     value="${value//"'"/"''"}"
     printf "'%s'" "$value"
 }

@@ -79,9 +79,10 @@ assert_bind() {
     local source="$2"
     local read_only="$3"
     local consistency="$4"
+    local expected_source="${source//\$/\$\$}"
     jq -e \
         --arg target "$target" \
-        --arg source "$source" \
+        --arg source "$expected_source" \
         --argjson read_only "$read_only" \
         --arg consistency "$consistency" \
         '[.services["py-bench"].volumes[] | select(.target == $target)] as $mounts
@@ -309,15 +310,15 @@ mkdir -p \
     "$CASE_HOME/.local/state/workbenches" \
     "$CASE_DIR/new config" \
     "$CASE_DIR/new lib" \
-    "$CASE_DIR/new state's"
+    "$CASE_DIR/new state's\$MOUNT_SUFFIX"
 run_resolver \
     "OPENBENCHES_CONFIG_ROOT=$CASE_DIR/new config" \
     "OPENBENCHES_LIB_ROOT=$CASE_DIR/new lib" \
-    "OPENBENCHES_STATE_ROOT=$CASE_DIR/new state's"
+    "OPENBENCHES_STATE_ROOT=$CASE_DIR/new state's\$MOUNT_SUFFIX"
 check_case explicit-new-override-with-yaml-quoting \
     "$CASE_DIR/new config" \
     "$CASE_DIR/new lib" \
-    "$CASE_DIR/new state's"
+    "$CASE_DIR/new state's\$MOUNT_SUFFIX"
 
 prepare_case equal-overrides
 mkdir -p "$CASE_DIR/shared-config" "$CASE_DIR/shared-lib" "$CASE_DIR/shared-state"
